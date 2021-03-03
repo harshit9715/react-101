@@ -5,6 +5,6 @@ import App from './App';
 import Assignment from './Assignment/Assignment'
 import registerServiceWorker from './registerServiceWorker';
 
-// ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<Assignment />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(<Assignment />, document.getElementById('root'));
 registerServiceWorker();

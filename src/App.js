@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './App.css';
 import Person from './Person/Person';
 
@@ -30,14 +31,6 @@ const app = props => {
     setShowPersons(!showPersons) 
   }
 
-  const buttonStyle = {
-    backgroundColor: 'white',
-    font: 'inherit',
-    border: '1px solid blue',
-    padding: '8px',
-    cursor: 'pointer'
-  };
-
   // JSX templates from here.
   let persons = null;
 
@@ -61,14 +54,20 @@ const app = props => {
     );
   }
 
+  const classes = []
+  if (personsState.length <= 2) {
+    classes.push('red')
+  }
+  if (personsState.length <= 1) {
+    classes.push('bold')
+  }
+
   return (
     <div className="App">
       <h1>Hi, I'm a React App</h1>
-      <p>This is really working!</p>
+      <p className={classes.join(' ')}>This is really working!</p>
       <button
-        style={buttonStyle}
         onClick={togglePersonsHandler}
-
       >Toggle Persons
       </button>
       {persons}
