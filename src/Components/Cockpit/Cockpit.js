@@ -1,7 +1,32 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 
 import styles from './Cockpit.module.css'
+
+// Context
+import AuthContext from '../../context/auth-context'
+
+
 const Cockpit = (props) => {
+
+    const authContext = useContext(AuthContext);
+    useEffect( () => {
+        console.log('[Cockpit.js] UseEffect')
+
+        // HTTP request...
+        setTimeout(() => {
+            console.log('saved data to cloud!')
+        }, 1000);
+        return () => {
+            console.log('[Cockpit.js] useEffect cleanup')
+        }
+    }, []);
+
+    useEffect( () => {
+        console.log('[Cockpit.js] 2nd UseEffect')
+        return () => {
+            console.log('[Cockpit.js] useEffect 2nd cleanup')
+        }
+    }, [props.showPersons, props.personsLength]);
 
     const assignedStyles = []
     let buttonStyle = ''
@@ -10,24 +35,25 @@ const Cockpit = (props) => {
         buttonStyle = styles.Red
     }
 
-    if (props.persons.length <= 2) {
+    if (props.personsLength <= 2) {
       assignedStyles.push(styles.red)
     }
-    if (props.persons.length <= 1) {
+    if (props.personsLength <= 1) {
       assignedStyles.push(styles.bold)
     }
     return (
         <div className={styles.Cockpit}>
-            <h1>Hi, I'm a React App</h1>
+            <h1>{props.title}</h1>
             <p className={assignedStyles.join(' ')}>This is really working!</p>
             <button
                 onClick={props.clicked}
                 className={buttonStyle}
             >Toggle Persons
             </button>
+            <button onClick={authContext.login}>Login</button>
         </div>
     );
 }
 
 
-export default Cockpit;
+export default React.memo(Cockpit);

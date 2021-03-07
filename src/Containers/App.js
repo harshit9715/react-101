@@ -4,6 +4,9 @@ import styles from './App.module.css';
 import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/Cockpit/Cockpit';
 
+// Contexts
+import AuthContext from '../context/auth-context'
+
 const app = props => {
   const [personsState, setPersonsState] = useState(
     [
@@ -13,6 +16,8 @@ const app = props => {
     ]);
 
   const [showPersons, setShowPersons] = useState(false);
+  const [showCockpit, setShowCockpit] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
 
 
   const changeNameHandler = (event, personIndex) => {
@@ -28,28 +33,42 @@ const app = props => {
   }
 
   const togglePersonsHandler = (event) => {
-    setShowPersons(!showPersons) 
+    setShowPersons(!showPersons)
+  }
+
+  const loginHandler = () => {
+    setIsAuth(true);
   }
 
   // JSX templates from here.
   let persons = null;
-  const buttonClass = [styles.Button];
 
   if (showPersons) {
-    persons = <Persons 
-          persons={personsState} 
-          clicked={deletePersonHandler} 
-          changed={changeNameHandler}/>
+    persons = <Persons
+      persons={personsState}
+      isAuth={isAuth}
+      clicked={deletePersonHandler}
+      changed={changeNameHandler} />
   }
-  
+
 
   return (
     <div className={styles.App}>
-      <Cockpit 
-        showPersons={showPersons} 
-        persons={personsState}
-        clicked={togglePersonsHandler}/>
-      {persons}
+      <button onClick={() => setShowCockpit(!showCockpit)}>Toggle cockpit</button>
+      <AuthContext.Provider value={
+        { 
+          authenticated: isAuth, 
+          login: loginHandler 
+        }}>
+        {showCockpit &&
+          <Cockpit
+            title={props.title}
+            showPersons={showPersons}
+            personsLength={personsState.length}
+            clicked={togglePersonsHandler} />
+        }
+        {persons}
+      </AuthContext.Provider>
     </div>
   );
 };
